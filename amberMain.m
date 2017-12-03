@@ -1,7 +1,13 @@
+%% AMBER - Artefactual Multiphoton Bundle Effect Removal
+% Algorithm for removing the multiphoton induced artifact when imaging
+% through a coherent fiber-bundle
+
 clear all;
 close all;
+
 % Open previous configuration settings, if they exist. Otherwise create new
 % configuration file with default settings.
+
 if exist('fcp_config.mat', 'file') == 2
     load('fcp_config.mat');
 else
@@ -54,7 +60,7 @@ if ~isnan(frameTime_ms)
 else
     tSeries = 0;
 end
-
+% Set scan range of flat image
 flatVoltX = 3;
 flatVoltY = 3;
 
@@ -105,7 +111,6 @@ for ii = 1:numImages
     imInputPad(:,:,ii) = centerPadCrop(imInputTemp,xFlat,yFlat);
     waitbar(ii/numImages,hWait);
 end
-% imInputPadMax = imgaussfilt(max(imInputPad,[],3),1);
 imInputPadGauss = imgaussfilt(mean(imInputPad(:,:,:),3),1);
 close(hWait);
 
@@ -214,27 +219,6 @@ inputVal = getCentroidValues(imInput,centroids,sampleRad);
 % Apply corrector values to each pixel
 outputVal = inputVal.*correctorVal;
 
-%% Remove static values
-% if (numImages>1)
-%     cont = 0;
-%     outputValMean = zeros(size(outputVal,1),1);
-%     outputValMean = mean(outputVal(:,userBGRange(1):userBGRange(2)),2);
-%     imOutputValMean = makeFiberImage(centroids,outputValMean,yInputSc,xInputSc,strel('disk',sampleRad));
-%     outputVal = outputVal - outputValMean;
-%     outputVal(outputVal<0) = 0;
-% end
-% meanOutputVal = mean(outputVal,2);
-% madMeanOutputVal = median(abs(meanOutputVal-median(meanOutputVal)));
-% 
-% figure(8); clf; hold on;
-% plot(meanOutputVal,'.b');
-% meanOutputVal(meanOutputVal<(1*mean(meanOutputVal)+5*madMeanOutputVal))=0;
-% plot(meanOutputVal,'ok');
-% fixedOutputVal = outputVal - meanOutputVal;
-% fixedOutputVal(fixedOutputVal<0) = 0;
-% % figure(9);
-% % imagesc(makeFiberImage(flatCentroids,fixedOutputVal(:,9),yFlat,xFlat,strel('disk',sampleRad)));
-% outputVal = fixedOutputVal;
 %% Filter cores independently
 outputValFilt = zeros(size(outputVal));
 % If not a time series, filter by simple 3D Gaussian window

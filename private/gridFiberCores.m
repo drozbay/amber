@@ -1,6 +1,22 @@
 function [imFVal,imFValLarge] = gridFiberCores(centroids,coreVal,numRows,numCols,subFactor,method)
+% B Ozbay
 % gridFiberCores
 % Reorganize fiber structure into uniform grid
+% INPUTS:
+% centroids - Array of input image centroids
+% coreVal - Array of values corresponding to centroids
+% numRows - Number of rows for output image
+% numCols - Number of columns for output image
+% subFactor - Sub-sampling factor for output image (1 is ~1 pixel for one
+% core, 2 is ~2 pixels for one core, etc.)
+% method - String that specifies interpolation method to use for
+% scatteredInterpolation function:
+%           'linear' - linear interpolation
+%           'nearest' - nearest neighbor interpolation
+%           'natural' - natural nearest neighbor interpolation
+% OUTPUTS:
+% imFVal - Image of gridded pixels
+% imFValLarge - Image of gridded pixels dilated by mean core distance
 
 numImages = size(coreVal,2);
 
@@ -20,13 +36,6 @@ yInterp = numRows-mod(numRows,sampleDist);
 FxLin = sampleDist-ceil(sampleDist/2):sampleDist:xInterp-ceil(sampleDist/2);
 FyLin = sampleDist-ceil(sampleDist/2):sampleDist:yInterp;
 [Fx,Fy] = meshgrid(FxLin,FyLin);
-
-% % + TEST + % Check uniform core pattern
-% imFOutputTest = zeros(numRows,numCols);
-% imFOutputTest(Fy(:,1),Fx(1,:)) = 1;
-% imCoreTest = makeFiberImage(centroids,max(coreVal,[],2),numRows,numCols,strel('disk',5));
-% figure(600); imshowpair(imdilate(imFOutputTest,strel('disk',2))*0.75,imCoreTest*2,'scaling','none');
-% % - TEST - %
 
 % Interpolate all data to uniform grid
 centroidsF = [reshape(Fx,[],1),reshape(Fy,[],1)];

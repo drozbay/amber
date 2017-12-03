@@ -1,5 +1,12 @@
 function writeFiberImages(folderName,baseFilename,bitDepth,varargin)
 %WRITEFIBERIMAGES
+% Writes images to files at specified bitdepth with suffix based on input
+% file type (ie. CH1 or CH2)
+% INPUT:
+% folderName - String for output folder path
+% baseFileName - String for base file name
+% bitDepth - Integer that specifies either 8 or 16 bit output image
+% varargin - List of images to write to files
 
 if bitDepth~=8 && bitDepth~=16
     warning('bitDepth is not 8 or 16, defaulting to 8');

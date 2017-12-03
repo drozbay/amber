@@ -1,5 +1,4 @@
 function [xTrans, yTrans] = rigidAlignFiber(imInputBW,imFlatBW, startX, startY,roughDist,fineDist)
-
 % B Ozbay 4/24/2017
 % Inputs:
 % imCoreBW - Image of sample cores with uniform intensity

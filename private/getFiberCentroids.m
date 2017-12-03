@@ -1,3 +1,4 @@
+function [centroids,imCoreBW] = getFiberCentroids(imInput, SE, thresh)
 % B Ozbay 5/15/2017
 % [centroids,imCoreBW] = getFiberCentroids(imFiberImage);
 
@@ -10,9 +11,6 @@
 % centroids - Core locations in image coordinates
 % imCores - Output binary mask of fiber core locations in original
 %   image coordinates structured by SE
-
-function [centroids,imCoreBW] = getFiberCentroids(imInput, SE, thresh)
-
 % Apply threshold to input image
 imInput(imInput<thresh) = 0;
 % Suppress pixels near border

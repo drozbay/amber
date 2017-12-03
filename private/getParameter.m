@@ -1,9 +1,20 @@
 function [ paramOut ] = getParameter( filePath, paramLabel )
-%GETPARAMETER
+% getParameter - B. Ozbay (11/15/2017)
+% Parses a parameter file associated with image at filePath for paramLabel
+% and returns the number immediately following the label
+% INPUTS:
+% filePath - String path of image file associated with parameter file.
+% Parameter file should end with '_parameter.txt'.
+% paramLabel - String inside text file to find
+% OUTPUTS:
+% paramOut - Returns a number of type DOUBLE if paramLabel is found,
+% otherwise returns NaN
+
 [paramPath,paramName,~] = fileparts(filePath);
 cont = 0;
 while ~cont
-    [paramPath,'\',paramName,'parameter.txt']
+    % Check if parameter file associated with filePath exists.
+    % If not, decrement the length of the filePath string and check again.
     if exist([paramPath,'\',paramName,'parameter.txt'], 'file') == 2
         cont = 1;
         fileID = fopen([paramPath,'\',paramName,'parameter.txt']);

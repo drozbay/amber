@@ -1,6 +1,12 @@
 function [correctorVal] = getCorrectorValues(imFlatVal, centroids, cropIn)
-%GETCORRECTORVALUES 
-
+% B Ozbay 11/15/2017
+% getCorrectorVals
+% Inputs:
+% imFlatVal - Image of flat values translated to input image
+% centroids - Array of centroids from input image
+% cropIn - Struct of cropping positions
+% Outputs:
+% correctorVal - Array of values corresponding to centroids
 
 % Create shading filter
 intShadFilter = imgaussfilt(imFlatVal*1,30);

@@ -1,5 +1,6 @@
 function [imFiberVal, imFiberBW] = makeFiberImage(centroids,coreValues,numRows,numCols,SE)
-%MAKEFIBERIMAGE 
+% B Ozbay 5/15/2017
+%MAKEFIBERIMAGE
 
 numImages = size(coreValues,2);
 numCores = size(centroids,1);
