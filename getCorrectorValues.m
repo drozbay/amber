@@ -15,7 +15,7 @@ imFlatValShad = imFlatValShad/max(imFlatValShad(:));
 % Create corrector image with inverse flat
 imCorrector = mean(imFlatVal(:))*(imFlatValShad.^-1);
 % Crop imCorrector to size of input image
-imCorrector = imCorrector(cropIn.StartY:cropIn.EndY,cropIn.StartX:cropIn.EndX);
+% imCorrector = imCorrector(cropIn.StartY:cropIn.EndY,cropIn.StartX:cropIn.EndX);
 % Sample corrector values back into vector
 correctorVal = getCentroidValues(imCorrector,centroids,1);
 % Remove erroneous values

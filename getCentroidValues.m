@@ -36,7 +36,7 @@ centroidPad(centroidPad(:,2)>(numCols-sampleRad),2) = numCols-sampleRad;
 % % - TEST - %
 
 coreVal = zeros(numCores,numImages);
-topPixels = ceil(length(circMask(circMask))); % Number of pixels from region to sample
+topPixels = ceil(length(circMask(circMask))*2/3); % Number of pixels from region to sample
 hWait = waitbar(0, sprintf('Processing stack...'));
 for ii = 1:numImages
     imCurrent = imFiber(:,:,ii);
