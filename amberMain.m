@@ -285,7 +285,7 @@ centroidsInput(:,2) = ceil(centroidsInput(:,2))-cropIn.StartY;
 numCores = size(centroidsInput,1);
 % Acquire core values from each image
 inputVal = getCentroidValues(imInput(:,:,:),centroidsInput,sampleRad);
-
+inputVal(13039,:) = 0;
 
 %% Corrector matrix creation
 % Get values from flat image
@@ -371,22 +371,35 @@ if ~isnan(imFiberBGPath)
 %     imInputValSubBG = imInputValSubBG./max(imInputValSubBG(:));
 %     imOutputValFiltSubBG = imOutputValFiltSubBG./max(imOutputValFiltSubBG(:));
     
-    % Grid and write data
+    %% Grid and write data
     % Grid data with nearest interp
 %     subfactor = 1;
 %     method = 'nearest';
 %     imOutputNearestSubBG = gridFiberCores(centroidsInput,outputValFiltSubBG,...
 %         yInputSc,xInputSc,subfactor,method);
 %     imOutputNearestSubBG = imOutputNearestSubBG./max(imOutputNearestSubBG(:));
-    
-    subfactor = 2;
-    method = 'natural';
-    
+%     
+%     subfactor = 2;
+%     method = 'natural';
+%     
 %     imOutputNatural2xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
 %         yInputSc,xInputSc,subfactor,method);
 %     imOutputNatural2xSubBG = imOutputNatural2xSubBG./max(imOutputNatural2xSubBG(:));
+    subfactor = 2;
+    method = 'nearest';
+    imOutputNearest2xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
+        yInputSc,xInputSc,subfactor,method);
+    imOutputNearest2xSubBG = imOutputNearest2xSubBG./max(imOutputNearest2xSubBG(:));
 %     
-    imOutputFiltNatural2xSubBG = gridFiberCores(centroidsInput,outputValFiltSubBG,...
+%     imOutputNearest1xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
+%         yInputSc,xInputSc,1,'nearest');
+%     imOutputNearest1xSubBG = imOutputNearest1xSubBG./max(imOutputNearest1xSubBG(:));
+%     
+    
+%     imOutputCoreSet = gridFiberCores(centroidsInput,outputValFiltSubBG,...
+%         yInputSc,xInputSc,1,'coreset');
+    
+    imOutputFiltNatural2xSubBG = gridFiberCores2(centroidsInput,outputValFiltSubBG,...
         yInputSc,xInputSc,subfactor,method);
     imOutputFiltNatural2xSubBG = imOutputFiltNatural2xSubBG./max(imOutputFiltNatural2xSubBG(:));
     
@@ -403,7 +416,7 @@ if ~isnan(imFiberBGPath)
 %     writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,...
 %             imInputValSubBG,imOutputValFiltSubBG,imOutputNearestSubBG,imOutputNatural2xSubBG);
 %     writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNatural2xSubBG,imOutputFiltNatural2xSubBG);
-    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputFiltNatural2xSubBG);
+    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNearest2xSubBG);
 
 
 else
@@ -425,21 +438,29 @@ else
 
     %% Grid and write data
     % Grid data with nearest interp
-    % subfactor = 1;
-    % method = 'nearest';
-    % imOutputNearest = gridFiberCores(centroidsInput,outputValFilt,...
-    %     yInputSc,xInputSc,subfactor,method);
-    % imOutputNearest = imOutputNearest./max(imOutputNearest(:));
+%     subfactor = 1;
+%     method = 'nearest';
+%     imOutputNearest = gridFiberCores(centroidsInput,outputValFilt,...
+%         yInputSc,xInputSc,subfactor,method);
+%     imOutputNearest = imOutputNearest./max(imOutputNearest(:));
+    
     subfactor = 2;
-    method = 'natural';
-
-    imOutputNatural2x = gridFiberCores(centroidsInput,outputVal,...
+    method = 'nearest';
+    imOutputNearest2x = gridFiberCores(centroidsInput,outputVal,...
         yInputSc,xInputSc,subfactor,method);
-    imOutputNatural2x = imOutputNatural2x./max(imOutputNatural2x(:));
-
-    imOutputNatural2xFilt = gridFiberCores(centroidsInput,outputValFilt,...
-        yInputSc,xInputSc,subfactor,method);
-    imOutputNatural2xFilt = imOutputNatural2xFilt./max(imOutputNatural2xFilt(:));
+    imOutputNearest2x = imOutputNearest2x./max(imOutputNearest2x(:));
+    
+    % Grid data with natural interp
+%     subfactor = 2;
+%     method = 'natural';
+% 
+%     imOutputNatural2x = gridFiberCores(centroidsInput,outputVal,...
+%         yInputSc,xInputSc,subfactor,method);
+%     imOutputNatural2x = imOutputNatural2x./max(imOutputNatural2x(:));
+% 
+%     imOutputNatural2xFilt = gridFiberCores(centroidsInput,outputValFilt,...
+%         yInputSc,xInputSc,subfactor,method);
+%     imOutputNatural2xFilt = imOutputNatural2xFilt./max(imOutputNatural2xFilt(:));
 
     chanNum = str2double(fnameInput(strfind(lower(fnameInput),'.tif')-1));
     if (chanNum~=1) && (chanNum~=2)
@@ -451,8 +472,8 @@ else
     saveFolderName = [pnameInput,'ProcessedSimple\',sprintf('%d_Output',fileNum)];
     status = mkdir(saveFolderName);
     bitDepth = 16;
-
+%
     % writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,...
     %         imInputVal,imOutputValFilt,imOutputNearest,imOutputNatural2x);
-    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNatural2x,imOutputNatural2xFilt);
+    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNearest2x);
 end
