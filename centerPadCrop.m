@@ -1,11 +1,14 @@
 function [outputImage] = centerPadCrop(inputImage,xSize,ySize)
 % centerPadCrop - B. Ozbay (04/26/2017)
 % [outputImage] = centerPadCrop(inputImage,xSize,ySize)
-% Inputs:
+% Performs a central crop on an image.
+%
+% INPUTS:
 % inputImage - Image to be padded/cropped
 % xSize, ySize - Size of output image
+%
 % Outputs:
-% outputImage - Padded/Cropped image of size xSize by ySize
+% outputImage - Cropped image from center of inputImage
 
 inputXSize = size(inputImage,2);
 inputYSize = size(inputImage,1);

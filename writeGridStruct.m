@@ -1,5 +1,19 @@
 function writeGridStruct(folderName,baseFilename,bitDepth,stOutGrid)
-%WRITEGRIDSTRUCT
+% writeGridStruct - B. Ozbay (5/15/2017)
+% writeGridStruct(folderName,baseFilename,bitDepth,stOutGrid)
+% Function to choose the output methods based on stOutGrid settings
+% 
+% INPUTS:
+% folderName - Location to save output files
+% baseFilename - Base of outputs files, to which the output suffixes will
+% be added
+% bitDepth - Value of 8 or 16 to define bit depth
+
+% stOutGrid - Structure of options to define output conditions:
+%   stOutGrid tree:
+%       -> yesFilt/nonFilt
+%           -> resHi/resMed/resNorm
+%               -> natInterp/linInterp/neaInterp
 
 fileStartStr = 'imGridOut';
 normalizeImages = 1;

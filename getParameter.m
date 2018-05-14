@@ -1,11 +1,15 @@
 function [ paramOut ] = getParameter( filePath, paramLabel )
 % getParameter - B. Ozbay (11/15/2017)
-% Parses a parameter file associated with image at filePath for paramLabel
-% and returns the number immediately following the label
+% [paramOut] = getParameter(filePath, paramLabel)
+% Parses a parameter text file associated with image at filePath for
+% a parameter identified by paramLabel and returns the number immediately
+% following the label
+%
 % INPUTS:
 % filePath - String path of image file associated with parameter file.
 % Parameter file should end with '_parameter.txt'.
 % paramLabel - String inside text file to find
+%
 % OUTPUTS:
 % paramOut - Returns a number of type DOUBLE if paramLabel is found,
 % otherwise returns NaN

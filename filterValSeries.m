@@ -1,9 +1,13 @@
 function valFilt = filterValSeries( valIn, tSeries, varargin )
-%filterValSeries
-% Performs a filter on each individual core value of a core values series
-% INPUT:
-% valIn - Series of core values of with number of rows being the number of
-% cores and each column being an image in the series
+% filterValSeries - B. Ozbay (04/26/2017)
+% [valFilt] = filterValSeries( valIn, tSeries, frameLength, sgOrder, gaussWindow )
+% Performs a filter on each individual core value of a core values series.
+% Specifying tSeries indicates whether the filter should use a temporal
+% Savitsky-Golay filter to preserve some transient features of a time
+% series. Otherwise a simple Gaussian filter is used.
+%
+% INPUTS:
+% valIn - NxM matrix of core values for a series with N cores and M frames
 % tSeries - Boolean value defining whether or not to interpret the input as
 % a time series or not. If tSeries==1, a Savitsky-Golay filter will be
 % used. Otherwise, a regular Gaussian window will be used.
@@ -12,10 +16,13 @@ function valFilt = filterValSeries( valIn, tSeries, varargin )
 % Optional name-value pairs:
 % frameLength - (def:9) For time series only, number of frames to use for
 % Savitsky-Golay filter.
-% sgOrder - (def:3) For time series only, order of Savitsky-Golay filter.
+% sgOrder - (def:3) For time series only, order of Savitsky-Golay filter
 % gaussWindow - (def:3) For non-time series, size of Gaussian filter window
+%
+% OUTPUTS:
+% valFilt - NxM matrix of filtered core values 
 
-%% Parse Inputs
+% Parse Inputs
 p = inputParser;
 
 defaultCorrectorVal = 0;

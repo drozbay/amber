@@ -53,7 +53,11 @@ save('fcp_config.mat','pnameInputStart','pnameFlatStart',...
     'pnameBGStart','-append');
 
 %% Get file parameters
-% Get voltage scan range for input file
+% Get scan range (in galvanometer volts) for input file
+% (Volts may be replaced with any lateral unit, such as microns, but must
+% be consistent through code)
+% (To use getParameter the image parameters must be saved in a text file,
+% otherwise you must acquire these parameters yourself)
 frameTime_ms = getParameter([pnameInput,fnameInput],'Frame length (ms):');
 frameStepSize = getParameter([pnameInput,fnameInput],'Step size (um):');
 inputVoltX = getParameter([pnameInput,fnameInput],'Scan Voltage (X):');
@@ -71,7 +75,7 @@ else
     tSeries = 0;
 end
 
-umPerVolt = 70;
+umPerVolt = 50;
 umPerEWVolt = 5;
 inputProperties = struct('frameTime',[],'stepSize',[],'umWidth',[],...
     'umHeight',[]);
@@ -285,7 +289,7 @@ centroidsInput(:,2) = ceil(centroidsInput(:,2))-cropIn.StartY;
 numCores = size(centroidsInput,1);
 % Acquire core values from each image
 inputVal = getCentroidValues(imInput(:,:,:),centroidsInput,sampleRad);
-inputVal(13039,:) = 0;
+% inputVal(13039,:) = 0;
 
 %% Corrector matrix creation
 % Get values from flat image
@@ -327,7 +331,7 @@ if ~isnan(imFiberBGPath)
     close(figChk);
 
     %% Scaling level for background subtraction (multiplicative)
-    BGValScale = (inputLaserPercent/bgLaserPercent)^2*0.4;
+    BGValScale = (inputLaserPercent/bgLaserPercent)^2*1;
     % Apply transformation to original background image
     imBGReg = imtranslate(imBGPad,[xTransBG+0, yTransBG+0]);
     imBGRegCrop = centerPadCrop(imBGReg,xInputSc,yInputSc);
@@ -378,19 +382,22 @@ if ~isnan(imFiberBGPath)
 %     imOutputNearestSubBG = gridFiberCores(centroidsInput,outputValFiltSubBG,...
 %         yInputSc,xInputSc,subfactor,method);
 %     imOutputNearestSubBG = imOutputNearestSubBG./max(imOutputNearestSubBG(:));
-%     
-%     subfactor = 2;
-%     method = 'natural';
-%     
+    
+    subfactor = 2;
+    method = 'natural';
+    
 %     imOutputNatural2xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
 %         yInputSc,xInputSc,subfactor,method);
 %     imOutputNatural2xSubBG = imOutputNatural2xSubBG./max(imOutputNatural2xSubBG(:));
-    subfactor = 2;
-    method = 'nearest';
-    imOutputNearest2xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
+    imOutputFiltNatural2xSubBG = gridFiberCores2(centroidsInput,outputValFiltSubBG,...
         yInputSc,xInputSc,subfactor,method);
-    imOutputNearest2xSubBG = imOutputNearest2xSubBG./max(imOutputNearest2xSubBG(:));
-%     
+    imOutputFiltNatural2xSubBG = imOutputFiltNatural2xSubBG./max(imOutputFiltNatural2xSubBG(:));
+%     subfactor = 2;
+%     method = 'nearest';
+%     imOutputNearest2xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
+%         yInputSc,xInputSc,subfactor,method);
+%     imOutputNearest2xSubBG = imOutputNearest2xSubBG./max(imOutputNearest2xSubBG(:));
+% %     
 %     imOutputNearest1xSubBG = gridFiberCores(centroidsInput,outputValSubBG,...
 %         yInputSc,xInputSc,1,'nearest');
 %     imOutputNearest1xSubBG = imOutputNearest1xSubBG./max(imOutputNearest1xSubBG(:));
@@ -399,9 +406,7 @@ if ~isnan(imFiberBGPath)
 %     imOutputCoreSet = gridFiberCores(centroidsInput,outputValFiltSubBG,...
 %         yInputSc,xInputSc,1,'coreset');
     
-    imOutputFiltNatural2xSubBG = gridFiberCores2(centroidsInput,outputValFiltSubBG,...
-        yInputSc,xInputSc,subfactor,method);
-    imOutputFiltNatural2xSubBG = imOutputFiltNatural2xSubBG./max(imOutputFiltNatural2xSubBG(:));
+    
     
     chanNum = str2double(fnameInput(strfind(lower(fnameInput),'.tif')-1));
     if (chanNum~=1) && (chanNum~=2)
@@ -416,7 +421,7 @@ if ~isnan(imFiberBGPath)
 %     writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,...
 %             imInputValSubBG,imOutputValFiltSubBG,imOutputNearestSubBG,imOutputNatural2xSubBG);
 %     writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNatural2xSubBG,imOutputFiltNatural2xSubBG);
-    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNearest2xSubBG);
+    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputFiltNatural2xSubBG);
 
 
 else
@@ -444,19 +449,19 @@ else
 %         yInputSc,xInputSc,subfactor,method);
 %     imOutputNearest = imOutputNearest./max(imOutputNearest(:));
     
-    subfactor = 2;
-    method = 'nearest';
-    imOutputNearest2x = gridFiberCores(centroidsInput,outputVal,...
-        yInputSc,xInputSc,subfactor,method);
-    imOutputNearest2x = imOutputNearest2x./max(imOutputNearest2x(:));
-    
-    % Grid data with natural interp
 %     subfactor = 2;
-%     method = 'natural';
-% 
-%     imOutputNatural2x = gridFiberCores(centroidsInput,outputVal,...
+%     method = 'nearest';
+%     imOutputNearest2x = gridFiberCores(centroidsInput,outputVal,...
 %         yInputSc,xInputSc,subfactor,method);
-%     imOutputNatural2x = imOutputNatural2x./max(imOutputNatural2x(:));
+%     imOutputNearest2x = imOutputNearest2x./max(imOutputNearest2x(:));
+    
+%     Grid data with natural interp
+    subfactor = 2;
+    method = 'natural';
+
+    imOutputNatural2x = gridFiberCores(centroidsInput,outputVal,...
+        yInputSc,xInputSc,subfactor,method);
+    imOutputNatural2x = imOutputNatural2x./max(imOutputNatural2x(:));
 % 
 %     imOutputNatural2xFilt = gridFiberCores(centroidsInput,outputValFilt,...
 %         yInputSc,xInputSc,subfactor,method);
@@ -475,5 +480,5 @@ else
 %
     % writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,...
     %         imInputVal,imOutputValFilt,imOutputNearest,imOutputNatural2x);
-    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNearest2x);
+    writeFiberImages(saveFolderName,saveFileName,bitDepth,inputProperties,imOutputNatural2x);
 end

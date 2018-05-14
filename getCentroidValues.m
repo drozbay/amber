@@ -1,5 +1,16 @@
 function [coreVal] = getCentroidValues(imFiber,centroids,sampleRad)
-%GETCENTROIDVALUES Get values of the fibers at each centroid location
+% getCentroidValues - B. Ozbay (4/24/2017)
+% [coreVal] = getCentroidValues(imFiber,centroids,sampleRad)
+% Get values of the fibers at each centroid location by averaging the
+% highest pixel values in a radius around the centroid
+%
+% INPUTS:
+% imFiber - Original image or image stack of fiber bundle
+% centroids - Nx2 Array of centroid pixel coordinates for N fiber cores
+% sampleRad - Pixel radius around centroid to search for high pixel values
+%
+% OUTPUTS:
+% coreVal - NxM matrix of N fiber core values for M images in stack
 
 numRows = size(imFiber,1);
 numCols = size(imFiber,2);
@@ -18,7 +29,6 @@ centroidPad = centroids;
 centroidPad(centroidPad<sampleRad+1) = sampleRad+1;
 centroidPad(centroidPad(:,1)>(numRows-sampleRad),1) = numRows-sampleRad;
 centroidPad(centroidPad(:,2)>(numCols-sampleRad),2) = numCols-sampleRad;
-
 
 % % - TEST - % Check sampling of original cores
 % imTester = zeros(numRows,numCols);

@@ -1,10 +1,14 @@
 function [imFVal,imFValLarge] = gridFiberCores(centroids,coreVal,numRows,numCols,subFactor,method)
-% B Ozbay
-% gridFiberCores
-% Reorganize fiber structure into uniform grid
+% gridFiberCores - B. Ozbay (5/11/2017)
+% [imFVal,imFValLarge] = gridFiberCores(centroids,coreVal,numRows,numCols,subFactor,method)
+% Reorganize fiber structure into uniform grid with specified interpolation
+% method.
+%
 % INPUTS:
-% centroids - Array of input image centroids
-% coreVal - Array of values corresponding to centroids
+% centroids - Nx2 array of input image centroids pixel coordinates for N
+% fiber cores
+% coreVal - NxM matrix of values corresponding to N centroids for an image
+% series of M frames
 % numRows - Number of rows for output image
 % numCols - Number of columns for output image
 % subFactor - Sub-sampling factor for output image (1 is ~1 pixel for one
@@ -14,6 +18,7 @@ function [imFVal,imFValLarge] = gridFiberCores(centroids,coreVal,numRows,numCols
 %           'linear' - linear interpolation
 %           'nearest' - nearest neighbor interpolation
 %           'natural' - natural nearest neighbor interpolation
+%
 % OUTPUTS:
 % imFVal - Image of gridded pixels
 % imFValLarge - Image of gridded pixels dilated by mean core distance

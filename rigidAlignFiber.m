@@ -1,6 +1,12 @@
 function [xTrans, yTrans] = rigidAlignFiber(imInputBW,imFlatBW, startX, startY,roughDist,fineDist)
-% B Ozbay 4/24/2017
-% Inputs:
+% rigidAlignFiber - B Ozbay. (4/24/2017)
+% [xTrans, yTrans] = rigidAlignFiber(imInputBW,imFlatBW, startX, startY,roughDist,fineDist)
+% Uses rigid registration (no rotation or scaling) to attempt to align two
+% images of the same fiber bundle to each other. Initially uses a rough
+% estimation to search around a large distance of translation, and then
+% uses fine sampling to find exact registration coordinates.
+%
+% INPUTS:
 % imCoreBW - Image of sample cores with uniform intensity
 % imFlatBW - Image of flat fiber image with uniform intensity
 % startX - Initial position guess of X translation
@@ -8,9 +14,8 @@ function [xTrans, yTrans] = rigidAlignFiber(imInputBW,imFlatBW, startX, startY,r
 % roughDist - Range in pixels to perform rough translation search
 % fineDist - Range in pixels to perform fine translation registration
 % Outputs:
-% xTrans - x translation result
-% yTrans - y translation result
-% 
+% xTrans - x translation for registration
+% yTrans - y translation for registration
 
 % Reduce size to speed function
 % and convert values to double between 0 and 1
