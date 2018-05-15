@@ -15,3 +15,5 @@ This release is a collection of functions and an example of a main program that 
 - writeFiberImages: Writes the processed image files to *.tif with metadata (using Bioformats toolbox)
 
 Author: Baris N. Ozbay, University of Colorado Denver, Department of Bioengineering
+
+https://zenodo.org/badge/DOI/10.5281/zenodo.1247507.svg
