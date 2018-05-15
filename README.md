@@ -16,4 +16,4 @@ This release is a collection of functions and an example of a main program that 
 
 Author: Baris N. Ozbay, University of Colorado Denver, Department of Bioengineering
 
-https://zenodo.org/badge/DOI/10.5281/zenodo.1247507.svg
+https://doi.org/10.5281/zenodo.1247507
